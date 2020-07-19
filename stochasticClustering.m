@@ -1,7 +1,9 @@
 function [index, output_im] = stochasticClustering(input_im, distance, n_classes, seeds, iteration, L)
 
+ampl_max = [max(input_im(:,1)) max(input_im(:,5)) max(input_im(:,9))];
+ampl_min = [min(input_im(:,1)) min(input_im(:,5)) min(input_im(:,9))];
+error_th = mean(abs(ampl_max - ampl_min))*0.01;
 [n_row, n_col, n_bands] = size(input_im);
-error_th = 100;
 index =1;
 counter = 1;
 data_total = im2vec( input_im, n_bands);

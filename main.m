@@ -3,36 +3,44 @@ clear
 close all
 clc
 
-folder = 'C:\Users\naial\Documents\Naiallen\Doutorado\Disciplinas\ProcessamentoDigitalDeImagens\Trabalho\TestesRat\';
-L = 5;
+folder = 'C:\Users\naial\Documents\Naiallen\Doutorado\Data\Oberpffafenhofe_Gilching\';
+L = 3;
 q = 3;
 
 %% Load coherence matrix image
-im_filename = 'coh_env.tif';
-hdr_filename = 'coh_env.hdr';
+im_filename = 'ESAR97VV_small_coh.dat';
+hdr_filename = 'ESAR97VV_small_coh.hdr';
 im_coh = openPolSARimage(folder, im_filename, hdr_filename);
-% imcoh = fmedia(im_coh,L);
-imcoh = filter_imean (im_coh, L);
+imcoh = im_coh;
+figure;
+plotPolSARimage( im_coh );
+
+% imcoh2 = fmedia(im_coh,L);
+% imcoh = filter_imean (im_coh, L);
 % figure;
 % subplot(121)
-% plotPolSARimage( imcoh );
+% plotPolSARimage( imcoh2 );
 % title('Box Filter')
 % subplot(122)
-% plotPolSARimage( imcoh2 );
+% plotPolSARimage( imcoh );
 % title('Riemann Box Filter')
 
 %% Load covariance matrix image
-im_filename = 'cov_envi.tif';
-hdr_filename = 'cov_envi.hdr';
+im_filename = 'ESAR97VV_small_cov.dat';
+hdr_filename = 'ESAR97VV_small_cov.hdr';
 im_cov = openPolSARimage(folder, im_filename, hdr_filename);
-% imcov = fmedia(im_cov,L);
-imcov = filter_imean (im_cov, L);
+imcov = im_cov;
+figure;
+plotPolSARimage( imcov );
+
+% imcov2 = fmedia(im_cov,L);
+% imcov = filter_imean (im_cov, L);
 % figure;
 % subplot(121)
-% plotPolSARimage( imcov );
+% plotPolSARimage( imcov2 );
 % title('Box Filter')
 % subplot(122)
-% plotPolSARimage( imcov2 );
+% plotPolSARimage( imcov );
 % title('Riemann Box Filter')
 
 %% Compute spacial number of looks-----------------------------------------

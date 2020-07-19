@@ -49,6 +49,6 @@ for ii = 1:n_bands
         ImTemp(:,:,ii) = temp_real + 1i*temp_imag; 
     end
 end
-output = ImTemp(950:1200, 500:900, :);%(950:960, 500:510, :);%
+output = ImTemp;%(950:1200, 500:900, :);%(950:960, 500:510, :);%
 end
 
