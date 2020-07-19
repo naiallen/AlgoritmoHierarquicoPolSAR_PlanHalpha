@@ -192,13 +192,13 @@ for level = 1:30
     
     subplot(246)
     plotPolSARimage(im1_cov);
-    t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 1}.Parameter);
-    title({strcat(strcat(strcat('Child 1 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child1_index}.ID)), t1}, 'color', tree{next_level, child1_index}.Color);
+%     t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 1}.Parameter);
+%     title({strcat(strcat(strcat('Child 1 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child1_index}.ID)), t1}, 'color', tree{next_level, child1_index}.Color);
 
     subplot(247)
     plotPolSARimage( im2_cov )
-    t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 2}.Parameter);
-    title({strcat(strcat(strcat('Child 2 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child2_index}.ID)), t1}, 'color', tree{next_level, child2_index}.Color);
+%     t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 2}.Parameter);
+%     title({strcat(strcat(strcat('Child 2 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child2_index}.ID)), t1}, 'color', tree{next_level, child2_index}.Color);
     
     
     data1 = [entropia(~isnan(d1)) alpha(~isnan(d1))];
@@ -307,14 +307,24 @@ for level = 1:30
             %% If there is no division, the branch stops
             tree{next_level, child1_index}.EntropyGain = 0;
         else
-            tree = updateChild(tree, next_level, child1_index, data1_cov, L, q, n_row, n_col);
+            tree = updateChild(tree, next_level, child1_index, parent_index, data1_cov, L, q, n_row, n_col);
         end
         if (w1_d2 < 0.005)
             tree{next_level, child2_index}.EntropyGain = 0;
         else
-            tree = updateChild(tree, next_level, child2_index, data2_cov, L, q,  n_row, n_col);
+            tree = updateChild(tree, next_level, child2_index, parent_index, data2_cov, L, q,  n_row, n_col);
         end
     end
+    
+    subplot(246)
+    t1 = strcat( 'H:', num2str(round(tree{next_level, child1_index}.EntropyGainParent, 2)) );
+    title({strcat(strcat(strcat('Child 1 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child1_index}.ID)), t1}, 'color', tree{next_level, child1_index}.Color);
+
+    subplot(247)
+    plotPolSARimage( im2_cov )
+    t1 = strcat( 'H:', num2str(round(tree{next_level, child2_index}.EntropyGainParent, 2)) );
+    title({strcat(strcat(strcat('Child 2 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child2_index}.ID)), t1}, 'color', tree{next_level, child2_index}.Color);
+    
     
     saveas(h1, strcat(folder, strcat(strcat('level_', num2str(level)), '.png')));
     HG = 0;
@@ -325,7 +335,7 @@ for level = 1:30
     end
     if (HG <= 0)
         break;
-    end
+    end   
 end
 h4  = figure('Position', [10 10 2000 700]);
 plotTree(tree);

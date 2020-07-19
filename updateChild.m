@@ -1,5 +1,9 @@
-function tree = updateChild(tree, next_level, child_index, data_cov, L, q,  n_row, n_col)
+function tree = updateChild(tree, next_level, child_index, parent_index, data_cov, L, q,  n_row, n_col)
 
+if (size(data_cov,1) <= 5)
+    tree{next_level, child_index}.EntropyGain = 0;
+    return
+end
 % [ch_seeds, data1, data2] = get_seeds_pca_complex(dataPolSAR, data);
 % [ch_seeds, data1, data2] = get_seeds_pca_real(dataPolSAR, data_cov);
 % [~, ch_seeds, data1, data2] = get_seed_EM(data_cov, L, q);
@@ -21,6 +25,16 @@ tree{next_level, child_index}.Parameter = par;
 %% Get entropy
 n_bands = size(data_cov, 2);
 tree{next_level, child_index}.Entropy = whisart_entropy(par, n_bands);
+
+%% Get information gain parent
+tree{next_level, child_index}.EntropyGainParent = abs( tree{next_level-1, parent_index}.Entropy - tree{next_level, child_index}.Entropy );
+if(isnan(tree{next_level, child_index}.EntropyGainParent))
+    test = 0;
+end
+if (tree{next_level, child_index}.EntropyGainParent < 1e-1)
+    tree{next_level, child_index}.EntropyGainParent = 0;
+end
+
 
 %% Compute entropy gain - child 1
 par.L = L;

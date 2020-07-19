@@ -24,6 +24,7 @@ if isempty(tree)
     tree{level}.Seeds = nan; 
     tree{level}.Entropy = nan; 
     tree{level}.EntropyGain = nan; 
+    tree{level}.EntropyGainParent = nan; 
     %----------------------------------------------------------------------
     
     next_level = level+1;
@@ -38,6 +39,7 @@ if isempty(tree)
     tree{next_level, 1}.Seeds = nan; 
     tree{next_level, 1}.Entropy = nan; 
     tree{next_level, 1}.EntropyGain = nan; 
+    tree{next_level, 1}.EntropyGainParent = nan; 
     
     tree{next_level, 2} = initTreeParameter();
     tree{next_level, 2}.ID = tree{level}.ChildsID(2);
@@ -48,6 +50,7 @@ if isempty(tree)
     tree{next_level, 2}.Seeds = nan; 
     tree{next_level, 2}.Entropy = nan; 
     tree{next_level, 2}.EntropyGain = nan; 
+    tree{next_level, 2}.EntropyGainParent = nan; 
     %----------------------------------------------------------------------
 else
     %% look for ID
@@ -75,6 +78,7 @@ else
     tree{next_level, 1}.Seeds = nan;
     tree{next_level, 1}.Entropy = nan;
     tree{next_level, 1}.EntropyGain = nan;
+    tree{next_level, 1}.EntropyGainParent = nan;
     
     tree{next_level, 2} = initTreeParameter();
     tree{next_level, 2}.ID = tree{level, parent_index}.ChildsID(2);
@@ -85,6 +89,7 @@ else
     tree{next_level, 2}.Seeds = nan;
     tree{next_level, 2}.Entropy = nan;
     tree{next_level, 2}.EntropyGain = nan;
+    tree{next_level, 2}.EntropyGainParent = nan;
     
     
     %Popula os nos subsequentes

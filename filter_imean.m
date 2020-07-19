@@ -21,8 +21,8 @@ output_image = input_img;
 % Contex
 step = floor(L/2);
 
-for row = 1+step:n_row-step
-    for col = 1+step:n_col-step
+for col = 1+step:n_col-step
+    for row = 1+step:n_row-step    
             imacov_vec = im2vec( input_img(row-step:row+step, col-step:col+step, :), n_bands);
             output_image(row, col, :) = intrisic_mean( imacov_vec );
     end
