@@ -7,4 +7,5 @@ tree_p.Seeds = nan;
 tree_p.SeedsData = nan;
 tree_p.Entropy = nan;
 tree_p.EntropyGain = nan;
+tree_p.EntropyGainParent = nan;
 end

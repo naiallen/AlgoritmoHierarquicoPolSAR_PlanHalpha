@@ -8,10 +8,10 @@ end
 maxLeaf = max(leafs);
 nodes = zeros(1,maxLeaf)*nan;
 ent = zeros(1,maxLeaf)*nan;
-for lev = 1:level;
+for lev = 1:level
     for c =1:lev
         nodes(tree{lev, c}.ID) = tree{lev, c}.parentID;          
-        ent(tree{lev, c}.ID) = round(tree{lev, c}.EntropyGain,2);  
+        ent(tree{lev, c}.ID) = round(tree{lev, c}.EntropyGainParent,2);  
     end
 end
 treeplot(nodes,'ob', '-b')

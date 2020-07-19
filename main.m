@@ -3,7 +3,7 @@ clear
 close all
 clc
 
-folder = 'C:\Users\naial\Documents\Naiallen\Doutorado\Disciplinas\ProcessamentoDigitalDeImagens\Trabalho\TestesRat\';
+folder = 'C:\Users\ncarval1\Documents\PersonalCodes\Matlab\Doutorado\imagem\';
 L = 5;
 q = 3;
 
@@ -11,29 +11,33 @@ q = 3;
 im_filename = 'coh_env.tif';
 hdr_filename = 'coh_env.hdr';
 im_coh = openPolSARimage(folder, im_filename, hdr_filename);
-% imcoh = fmedia(im_coh,L);
-imcoh = filter_imean (im_coh, L);
+plotPolSARimage( im_coh);
+imcoh = im_coh;% filter_imean (im_coh, L);
+% imcoh2 = fmedia(im_coh,L);
 % figure;
 % subplot(121)
-% plotPolSARimage( imcoh );
+% plotPolSARimage( imcoh2 );
 % title('Box Filter')
 % subplot(122)
-% plotPolSARimage( imcoh2 );
+% plotPolSARimage( imcoh );
 % title('Riemann Box Filter')
 
 %% Load covariance matrix image
 im_filename = 'cov_envi.tif';
 hdr_filename = 'cov_envi.hdr';
 im_cov = openPolSARimage(folder, im_filename, hdr_filename);
-% imcov = fmedia(im_cov,L);
+figure;
+plotPolSARimage( im_cov );
+axis equal;
 imcov = filter_imean (im_cov, L);
-% figure;
-% subplot(121)
-% plotPolSARimage( imcov );
-% title('Box Filter')
-% subplot(122)
-% plotPolSARimage( imcov2 );
-% title('Riemann Box Filter')
+imcov2 = fmedia(im_cov,L);
+figure;
+subplot(121)
+plotPolSARimage( imcov2 );
+title('Box Filter')
+subplot(122)
+plotPolSARimage( imcov );
+title('Riemann Box Filter')
 
 %% Compute spacial number of looks-----------------------------------------
 % tic
@@ -184,13 +188,13 @@ for level = 1:30
     
     subplot(246)
     plotPolSARimage(im1_cov);
-    t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 1}.Parameter);
-    title({strcat(strcat(strcat('Child 1 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child1_index}.ID)), t1}, 'color', tree{next_level, child1_index}.Color);
+%     t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 1}.Parameter);
+%     title({strcat(strcat(strcat('Child 1 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child1_index}.ID)), t1}, 'color', tree{next_level, child1_index}.Color);
 
     subplot(247)
     plotPolSARimage( im2_cov )
-    t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 2}.Parameter);
-    title({strcat(strcat(strcat('Child 2 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child2_index}.ID)), t1}, 'color', tree{next_level, child2_index}.Color);
+%     t1 = '';%sprintf('Parameter %5.2f:' , im_tree{next_level, 2}.Parameter);
+%     title({strcat(strcat(strcat('Child 2 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child2_index}.ID)), t1}, 'color', tree{next_level, child2_index}.Color);
     
     
     data1 = [entropia(~isnan(d1)) alpha(~isnan(d1))];
@@ -299,14 +303,24 @@ for level = 1:30
             %% If there is no division, the branch stops
             tree{next_level, child1_index}.EntropyGain = 0;
         else
-            tree = updateChild(tree, next_level, child1_index, data1_cov, L, q, n_row, n_col);
+            tree = updateChild(tree, next_level, child1_index, parent_index, data1_cov, L, q, n_row, n_col);
         end
         if (w1_d2 < 0.005)
             tree{next_level, child2_index}.EntropyGain = 0;
         else
-            tree = updateChild(tree, next_level, child2_index, data2_cov, L, q,  n_row, n_col);
+            tree = updateChild(tree, next_level, child2_index, parent_index, data2_cov, L, q,  n_row, n_col);
         end
     end
+    
+    subplot(246)
+    t1 = strcat( 'H:', num2str(round(tree{next_level, child1_index}.EntropyGainParent, 2)) );
+    title({strcat(strcat(strcat('Child 1 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child1_index}.ID)), t1}, 'color', tree{next_level, child1_index}.Color);
+
+    subplot(247)
+    plotPolSARimage( im2_cov )
+    t1 = strcat( 'H:', num2str(round(tree{next_level, child2_index}.EntropyGainParent, 2)) );
+    title({strcat(strcat(strcat('Child 2 - Level: ', num2str(next_level)), ' - ID:'), num2str(tree{next_level, child2_index}.ID)), t1}, 'color', tree{next_level, child2_index}.Color);
+    
     
     saveas(h1, strcat(folder, strcat(strcat('level_', num2str(level)), '.png')));
     HG = 0;
@@ -317,7 +331,7 @@ for level = 1:30
     end
     if (HG <= 0)
         break;
-    end
+    end   
 end
 h4  = figure('Position', [10 10 2000 700]);
 plotTree(tree);
