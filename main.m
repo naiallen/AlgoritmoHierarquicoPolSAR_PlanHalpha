@@ -3,13 +3,13 @@ clear
 close all
 clc
 
-folder = 'C:\Users\naial\Documents\Naiallen\Doutorado\Data\Oberpffafenhofe_Gilching\';
+folder = 'C:\Users\naial\Documents\Naiallen\Doutorado\HelperMatlab\Doutorado\SimulaçãoPolSAR_prob\Simuladas\';
 L = 3;
 q = 3;
 
 %% Load coherence matrix image
-im_filename = 'ESAR97VV_small_coh.dat';
-hdr_filename = 'ESAR97VV_small_coh.hdr';
+im_filename = 'polSAR1.dat_coh.dat';
+hdr_filename = 'polSAR1.dat_coh.hdr';
 im_coh = openPolSARimage(folder, im_filename, hdr_filename);
 imcoh = im_coh;
 figure;
@@ -26,8 +26,8 @@ plotPolSARimage( im_coh );
 % title('Riemann Box Filter')
 
 %% Load covariance matrix image
-im_filename = 'ESAR97VV_small_cov.dat';
-hdr_filename = 'ESAR97VV_small_cov.hdr';
+im_filename = 'polSAR1.dat_cov.dat';
+hdr_filename = 'polSAR1.dat_cov.hdr';
 im_cov = openPolSARimage(folder, im_filename, hdr_filename);
 imcov = im_cov;
 figure;

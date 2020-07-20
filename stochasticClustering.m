@@ -2,7 +2,7 @@ function [index, output_im] = stochasticClustering(input_im, distance, n_classes
 
 ampl_max = [max(input_im(:,1)) max(input_im(:,5)) max(input_im(:,9))];
 ampl_min = [min(input_im(:,1)) min(input_im(:,5)) min(input_im(:,9))];
-error_th = mean(abs(ampl_max - ampl_min))*0.01;
+error_th = mean(abs(ampl_max - ampl_min))*0.05;
 [n_row, n_col, n_bands] = size(input_im);
 index =1;
 counter = 1;
