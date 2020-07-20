@@ -61,7 +61,7 @@ sw2 = 1;%size(data2, 1)/(n_row*n_col);
 HG2 = abs((tree{next_level, child_index}.Entropy-entropy2)*sw2);
 
 HG = mean([HG1 HG2]);
-if (HG < 1e-1)
+if (HG < 0.1)
     HG = 0;
 end
 tree{next_level, child_index}.EntropyGain = HG;
